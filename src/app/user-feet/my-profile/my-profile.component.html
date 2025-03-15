@@ -1,0 +1,24 @@
+<br>
+<button type="button" class="btn btn-primary" (click)="navigateToAddPost()">Add Post</button>
+
+<div class="container mt-4">
+
+    <!-- User Profile Section -->
+    
+  
+    <!-- User Posts -->
+    <h5 class="mt-4">My Posts</h5>
+    <div class="row mt-3">
+      <div *ngFor="let post of posts" class="col-md-4 mb-4">
+        <div class="card shadow-sm">
+          <img [src]="post.image" alt="Post" class="card-img-top">
+          <div class="card-body">
+            <p class="card-text">{{ post.caption }}</p>
+          </div>
+        </div>
+        <button type="button" class="btn btn-danger" (click)="deletePost(post.id)">Delete Post</button>
+      </div>
+    </div>
+  
+  </div>
+  

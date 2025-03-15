@@ -1,0 +1,37 @@
+<div class="container mt-4">
+    <!-- Post Form -->
+    <form #postForm="ngForm"  (ngSubmit)="onSubmit(postForm.value)" class="card p-3 shadow-sm">
+      <h5 class="card-title">Create a Post</h5>
+  
+      <!-- Image URL Input -->
+      <div class="mb-3">
+        <label for="imageUrl" class="form-label">Image URL</label>
+        <input 
+          type="text" 
+          id="imageUrl" 
+          class="form-control" 
+          ngModel 
+          name="image" 
+          required 
+          placeholder="Enter image URL">
+      </div>
+  
+      <!-- Caption Input -->
+      <div class="mb-3">
+        <label for="caption" class="form-label">Caption</label>
+        <input 
+          type="text" 
+          id="caption" 
+          class="form-control" 
+          ngModel
+          name="caption" 
+          required 
+          placeholder="Enter caption">
+      </div>
+  
+      <!-- Submit Button -->
+      <button type="submit" class="btn btn-primary w-100" >Post</button>
+    </form>
+  
+     
+  
