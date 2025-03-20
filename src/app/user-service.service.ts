@@ -8,6 +8,7 @@ import { BehaviorSubject } from 'rxjs';
   providedIn: 'root'
 })
 export class UserServiceService {
+  api:string="https://socialsiteserver-1.onrender.com";
 
 userEmail: string | null = null;
   private userData=new BehaviorSubject<signUp|null>(null);
@@ -30,7 +31,7 @@ if (storedUser) {
   isLoggedIn=new BehaviorSubject<boolean>(false)
   isLoginUnSuccessfull=new BehaviorSubject<boolean>(false)
   userSignUp(userData:signUp){
-      return this.http.post(`http://localhost:8080/user/`,userData,{observe:'response'}).subscribe((result)=>{
+      return this.http.post(`${this.api}/user`,userData,{observe:'response'}).subscribe((result)=>{
         if(result){
           //console.log(result)
           this.router.navigate(['/login'])
@@ -38,11 +39,16 @@ if (storedUser) {
       })
   }
   logOut(){
+    
     localStorage.removeItem('user');
     localStorage.removeItem('userPosts');
     this.userEmail=null
     this.userData.next(null)
     this.myPost.next([]);
+  }
+  checkIfLoggedIn(){
+      if(localStorage.getItem('user')!=null) return true
+      else return false
   }
 
   loadUserEmail() {
@@ -59,7 +65,7 @@ if (storedUser) {
       console.warn("User email not set. Cannot fetch posts.");
       return;
     }
-    this.http.get<product[]>(`http://localhost:8080/product/${encodeURIComponent(this.userEmail)}`).subscribe({
+    this.http.get<product[]>(`${this.api}/product/${encodeURIComponent(this.userEmail)}`).subscribe({
       next: (products) => {
         this.myPost.next(products); // Update in service
       },
@@ -74,7 +80,7 @@ if (storedUser) {
   private allPost=new BehaviorSubject<product[]>([])
   all$=this.myPost.asObservable();
   getAllUserPosts(){
-    this.http.get<product[]>(`http://localhost:8080/product/allUsers`).subscribe({
+    this.http.get<product[]>(`${this.api}/product/allUsers`).subscribe({
       next: (products) => {
         this.myPost.next(products); // Update in service
       },
@@ -90,7 +96,7 @@ if (storedUser) {
       return;
     }
       
-      this.http.post(`http://localhost:8080/product/${encodeURIComponent(this.userEmail)}`,postContent,{observe:'response'}).subscribe({
+      this.http.post(`${this.api}/product/${encodeURIComponent(this.userEmail)}`,postContent,{observe:'response'}).subscribe({
         next: () => {
           this.getuserPosts();// Fetch updated products
           console.warn(postContent)
@@ -107,7 +113,7 @@ if (storedUser) {
       
       return;
     }
-      this.http.delete(`http://localhost:8080/product/${encodeURIComponent(this.userEmail)}/${encodeURIComponent(idd)}`).subscribe((result)=>{
+      this.http.delete(`${this.api}/product/${encodeURIComponent(this.userEmail)}/${encodeURIComponent(idd)}`).subscribe((result)=>{
         if(result){
           
           this.getuserPosts();
@@ -118,7 +124,7 @@ if (storedUser) {
   }
 
   userLogin(userData: login) {
-    this.http.post(`http://localhost:8080/user/login`, userData, { observe: 'response' })
+    this.http.post(`${this.api}/user/login`, userData, { observe: 'response' })
       .subscribe({
         next: (result) => {
           if (result.status === 200) {
